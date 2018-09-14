@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BlogBD" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-M9Q21D4;Initial Catalog=BlogBD;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BlogBDConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Usuario" Member="Usuario">
+    <Type Name="Usuario">
+      <Column Name="LoginID" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Contra" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Tipo" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Administrador" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Usuario_Trabajo" Member="Trabajo" ThisKey="LoginID" OtherKey="LoginID" Type="Trabajo" />
+      <Association Name="Usuario_Mensaje" Member="Mensaje" ThisKey="LoginID" OtherKey="IdUsuarioRec" Type="Mensaje" />
+      <Association Name="Usuario_Mensaje1" Member="Mensaje1" ThisKey="LoginID" OtherKey="IdUsuarioEnv" Type="Mensaje" />
+      <Association Name="Usuario_Comentario" Member="Comentario" ThisKey="LoginID" OtherKey="LoginID" Type="Comentario" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Trabajo" Member="Trabajo">
+    <Type Name="Trabajo">
+      <Column Name="IdTrabajo" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LoginID" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Titulo" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Lugar" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Descripcion" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="FechaPublicacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Tipo" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="Usuario_Trabajo" Member="Usuario" ThisKey="LoginID" OtherKey="LoginID" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Noticia" Member="Noticia">
+    <Type Name="Noticia">
+      <Column Name="IdNot" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Titulo" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Cuerpo" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="LoginID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="IdCategoria" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FechaPublicacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Categoria_Noticia" Member="Categoria" ThisKey="IdCategoria" OtherKey="IdCategoria" Type="Categoria" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Mensaje" Member="Mensaje">
+    <Type Name="Mensaje">
+      <Column Name="IdMensaje" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdUsuarioEnv" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IdUsuarioRec" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Texto" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Usuario_Mensaje" Member="Usuario" ThisKey="IdUsuarioRec" OtherKey="LoginID" Type="Usuario" IsForeignKey="true" />
+      <Association Name="Usuario_Mensaje1" Member="Usuario1" ThisKey="IdUsuarioEnv" OtherKey="LoginID" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Evento" Member="Evento">
+    <Type Name="Evento">
+      <Column Name="IdEvento" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Lugar" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Comentario" Member="Comentario">
+    <Type Name="Comentario">
+      <Column Name="IdComentario" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Texto" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="LoginID" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IdNot" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Estado" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Usuario_Comentario" Member="Usuario" ThisKey="LoginID" OtherKey="LoginID" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Categoria" Member="Categoria">
+    <Type Name="Categoria">
+      <Column Name="IdCategoria" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="Categoria_Noticia" Member="Noticia" ThisKey="IdCategoria" OtherKey="IdCategoria" Type="Noticia" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Asociacion" Member="Asociacion">
+    <Type Name="Asociacion">
+      <Column Name="IdAsociacion" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Ubicacion" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Lider" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Telefono" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Correo" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
